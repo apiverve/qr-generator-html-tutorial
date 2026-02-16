@@ -176,6 +176,14 @@ Explore more APIs at [APIVerve](https://apiverve.com/marketplace?utm_source=gith
 - [QR Code Reader](https://apiverve.com/marketplace/qrcodereader?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - Decode QR codes from images
 - [URL Shortener](https://apiverve.com/marketplace/urlshortener?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - Create short URLs for your QR codes
 
+## Free Plan Note
+
+This tutorial works with the free APIVerve plan. Some APIs may have:
+- **Locked fields**: Premium response fields return `null` on free plans
+- **Ignored parameters**: Some optional parameters require a paid plan
+
+The API response includes a `premium` object when limitations apply. [Upgrade anytime](https://dashboard.apiverve.com/plans) to unlock all features.
+
 ## License
 
 MIT - see [LICENSE](LICENSE)
