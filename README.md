@@ -134,14 +134,14 @@ const response = await fetch('https://api.apiverve.com/v1/qrcodegenerator', {
   "status": "ok",
   "error": null,
   "data": {
-    "id": "abc123",
+    "id": "b07577c8-e17f-4af3-aeff-94c74d9ea04a",
     "format": "png",
     "type": "url",
     "correction": "M",
-    "size": 256,
+    "size": 5,
     "margin": 0,
-    "expires": 1702425600000,
-    "downloadURL": "https://storage.apiverve.com/qr/abc123.png"
+    "expires": 1766096864874,
+    "downloadURL": "https://storage.googleapis.com/apiverve/..."
   }
 }
 ```
