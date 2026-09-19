@@ -1,18 +1,10 @@
 /**
- * QR Code Generator - Tutorial Example
+ * QR Code Generator, an APIVerve template.
  *
- * A simple example using the APIVerve QR Code Generator API.
+ * Turn a URL or text into a QR code you can download. The page calls /api/qr (api/qr.js),
+ * which holds your API key and calls the QR Code Generator API:
  * https://apiverve.com/marketplace/qrcodegenerator
  */
-
-// ============================================
-// CONFIGURATION - Add your API key here
-// Get a free key at: https://dashboard.apiverve.com
-// ============================================
-const API_KEY = 'your-api-key-here';
-
-// API endpoint
-const API_URL = 'https://api.apiverve.com/v1/qrcodegenerator';
 
 /**
  * Generate a QR code from the form inputs
@@ -21,7 +13,6 @@ async function generateQR() {
   // Get form values
   const content = document.getElementById('content').value.trim();
   const margin = document.getElementById('margin').value;
-  const format = document.getElementById('format').value;
 
   // Get DOM elements
   const btn = document.getElementById('generateBtn');
@@ -29,12 +20,6 @@ async function generateQR() {
   const result = document.getElementById('result');
   const qrImage = document.getElementById('qrImage');
   const downloadLink = document.getElementById('downloadLink');
-
-  // Validate API key
-  if (API_KEY === 'your-api-key-here') {
-    showError('Add your API key to js/app.js first');
-    return;
-  }
 
   // Validate content
   if (!content) {
@@ -49,36 +34,24 @@ async function generateQR() {
   btn.textContent = 'Generating...';
 
   try {
-    // Make API request
-    const response = await fetch(API_URL, {
+    // Your server route adds the key and calls APIVerve
+    const response = await fetch('/api/qr', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
-      },
-      body: JSON.stringify({
-        value: content,
-        format: format,
-        margin: margin
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ value: content, margin: Number(margin) })
     });
 
     const data = await response.json();
 
-    // Handle successful response
-    if (data.status === 'ok' && data.data) {
-      qrImage.src = data.data.downloadURL;
-      downloadLink.href = data.data.downloadURL;
-      downloadLink.download = `qr-code.${format}`;
+    if (response.ok) {
+      qrImage.src = data.downloadURL;
+      downloadLink.href = data.downloadURL;
       result.classList.add('show');
     } else {
-      // Handle API error
       showError(data.error || 'Failed to generate QR code');
     }
   } catch (err) {
-    // Handle network error
-    showError('Request failed. Check your API key and try again.');
-    console.error('API Error:', err);
+    showError('Couldn’t reach the server. Try again.');
   } finally {
     // Reset button state
     btn.disabled = false;

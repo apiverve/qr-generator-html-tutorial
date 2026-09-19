@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Generator | APIVerve Tutorial</title>
+  <title>QR Code Generator</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
 
     <div class="form-group">
       <label for="content">Content (URL or text)</label>
-      <input type="text" id="content" placeholder="https://example.com" value="https://github.com">
+      <input type="text" id="content" placeholder="https://example.com" value="https://apiverve.com" maxlength="500">
     </div>
 
     <div class="row">
@@ -24,13 +24,6 @@
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="4">4</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="format">Format</label>
-        <select id="format">
-          <option value="png" selected>PNG</option>
-          <option value="svg">SVG</option>
         </select>
       </div>
     </div>
@@ -44,6 +37,10 @@
       <br>
       <a id="downloadLink" class="download-btn" download="qr-code.png">Download</a>
     </div>
+
+    <p class="footer">
+      Powered by <a href="https://apiverve.com/marketplace/qrcodegenerator?utm_source=github&amp;utm_medium=template&amp;utm_campaign=qr-generator-html-tutorial" target="_blank" rel="noopener noreferrer">APIVerve QR Code Generator API</a>
+    </p>
   </div>
 
   <script src="js/app.js"></script>

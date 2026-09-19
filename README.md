@@ -1,195 +1,107 @@
-# QR Code Generator | APIVerve API Tutorial
+# QR Code Generator | APIVerve Template
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)]()
-[![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-yellow)](js/app.js)
-[![HTML5](https://img.shields.io/badge/HTML-5-orange)](index.html)
-[![APIVerve | QR Code Generator](https://img.shields.io/badge/APIVerve-QR_Code_Generator-purple)](https://apiverve.com/marketplace/qrcodegenerator?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial)
+[![HTML](https://img.shields.io/badge/HTML-no_build-E34F26)](index.html)
+[![APIVerve | QR Code Generator](https://img.shields.io/badge/APIVerve-QR_Code_Generator-purple)](https://apiverve.com/marketplace/qrcodegenerator?utm_source=github&utm_medium=template&utm_campaign=qr-generator-html-tutorial)
 
-A simple, browser-based QR code generator built with vanilla HTML, CSS, and JavaScript. Generate QR codes from any URL, text, or data in seconds.
+Turn a URL or any text into a QR code image you can download and print.
 
-![Screenshot](https://raw.githubusercontent.com/apiverve/qr-generator-html-tutorial/main/screenshot.jpg)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fapiverve%2Fqr-generator-html-tutorial&project-name=qr-code-generator&repository-name=qr-code-generator&env=APIVERVE_API_KEY&envDescription=Your%20APIVerve%20API%20key.%20Free%20to%20create%2C%20no%20card%20needed.&envLink=https%3A%2F%2Fdashboard.apiverve.com%2Fsignup%3Fapi%3Dqrcodegenerator%26utm_source%3Dvercel%26utm_medium%3Dtemplate%26utm_campaign%3Dqr-generator-html-tutorial)
 
----
-
-### Get Your Free API Key
-
-This tutorial requires an APIVerve API key. **[Sign up free](https://dashboard.apiverve.com?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial)** - no credit card required.
+![QR Code Generator with a code for apiverve.com](https://raw.githubusercontent.com/apiverve/qr-generator-html-tutorial/main/screenshot.png)
 
 ---
 
-## Features
+### Get your free API key
 
-- Generate QR codes from URLs, text, phone numbers, emails, or any string
-- Choose between PNG and SVG output formats
-- Adjustable margin/padding around the QR code
-- One-click download of generated QR codes
-- Clean, responsive UI that works on desktop and mobile
-- Zero dependencies - pure HTML, CSS, and JavaScript
-- No build step required - just open in browser
+This template needs an APIVerve API key. **[Sign up free](https://dashboard.apiverve.com/signup?api=qrcodegenerator&utm_source=github&utm_medium=template&utm_campaign=qr-generator-html-tutorial)**, no credit card required.
 
-## Quick Start
+---
 
-1. **Clone this repository**
+## Deploy in one click
+
+Click **Deploy with Vercel** above. Vercel copies this repo to your GitHub account, asks for your `APIVERVE_API_KEY`, and gives you a live URL about a minute later.
+
+## Run it locally
+
+1. **Clone the repository**
    ```bash
    git clone https://github.com/apiverve/qr-generator-html-tutorial.git
    cd qr-generator-html-tutorial
    ```
 
 2. **Add your API key**
-
-   Open `js/app.js` and replace the placeholder with your API key:
-   ```javascript
-   const API_KEY = 'your-api-key-here';
-   ```
-
-3. **Open in browser**
-
-   Double-click `index.html` or run a local server:
    ```bash
-   npx serve .
-   # or
-   python -m http.server 8000
+   cp .env.example .env
+   ```
+   Then open `.env` and set `APIVERVE_API_KEY`.
+
+3. **Start it**
+   ```bash
+   npm run dev
    ```
 
-4. **Generate a QR code**
+4. **Open** `http://localhost:3000`
 
-   Enter any URL or text, choose your options, and click "Generate QR Code".
+`npm run dev` serves the page and runs the `api/` functions together, the same way Vercel does, so you don't need the Vercel CLI.
 
-## Project Structure
+## How it works
+
+1. The page (`index.html`) calls `POST /api/qr`.
+2. `api/qr.js` checks the input, then calls QR Code Generator. Your API key stays on the server and never reaches the browser.
+3. The page shows the result.
 
 ```
-qr-generator-html-tutorial/
-├── css/
-│   └── styles.css      # Styling and layout
-├── js/
-│   └── app.js          # API integration and application logic
-├── index.html          # Main HTML file
-├── screenshot.jpg      # Preview image
-├── LICENSE             # MIT license
-├── .gitignore          # Git ignore rules
-└── README.md           # This file
+├── api/qr.js            # Vercel function: checks input, calls APIVerve with your key
+├── lib/apiverve.js      # Shared by api/: key check, rate limit, the APIVerve call
+├── lib/dev-api.js       # Runs api/ locally (Vercel ignores it)
+├── dev.mjs              # `npm run dev`: serves the page and api/ on localhost
+├── index.html           # The page
+├── js/app.js            # The page's JavaScript
+├── css/styles.css
+├── .env.example         # Copy to .env and add your key
+└── package.json
 ```
 
-## How It Works
-
-This tutorial demonstrates how to integrate with a REST API using vanilla JavaScript:
-
-1. **User enters content** - URL, text, or any data to encode
-2. **Form submission** - JavaScript captures the input and options
-3. **API request** - A POST request is sent to the APIVerve endpoint with your API key
-4. **Response handling** - The API returns a URL to the generated QR code image
-5. **Display result** - The QR code is displayed and available for download
-
-### The API Call
+### The API call
 
 ```javascript
-const response = await fetch('https://api.apiverve.com/v1/qrcodegenerator', {
+const res = await fetch('https://api.apiverve.com/v1/qrcodegenerator', {
   method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': API_KEY
-  },
-  body: JSON.stringify({
-    value: 'https://example.com',
-    format: 'png',
-    margin: 0
-  })
+  headers: { 'x-api-key': process.env.APIVERVE_API_KEY, 'Content-Type': 'application/json' },
+  body: JSON.stringify({ value: 'https://example.com', margin: 0, format: 'png' })
 });
+const { data } = await res.json();
+// data.downloadURL → a PNG of the QR code
 ```
 
-## API Reference
+The download link the API returns expires, so save the image if you need to keep it. SVG output and custom colors are available on paid plans.
 
-**Endpoint:** `POST https://api.apiverve.com/v1/qrcodegenerator`
+## Before you share your URL
 
-**Headers:**
+Once deployed, anyone who finds your URL can use it on your API key. Each visitor can make 10 requests a minute, which is fine for a demo. The limit is kept in memory, so it isn't shared between serverless instances. For production:
 
-| Header | Value |
-|--------|-------|
-| `Content-Type` | `application/json` |
-| `x-api-key` | Your API key |
+- Put the page behind your own sign-in, or
+- Move the limit to a shared store such as [Upstash Redis](https://upstash.com/), or
+- Call the route only from your own backend.
 
-**Request Body:**
+## Ideas to extend it
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `value` | string | Yes | The content to encode (URL, text, etc.) |
-| `format` | string | No | Output format: `png` or `svg` (default: `png`) |
-| `margin` | integer | No | Margin around QR code in pixels (default: `0`) |
+- Print a QR code on each order's packing slip that links to its tracking page
+- Make codes for Wi-Fi details or contact cards (paid plans)
+- Read codes back with the [QR Code Reader](https://github.com/apiverve/qr-reader-html-tutorial) template
 
-**Example Request:**
+## API reference
 
-```json
-{
-  "value": "https://github.com",
-  "format": "png",
-  "margin": 0
-}
-```
+- [QR Code Generator](https://apiverve.com/marketplace/qrcodegenerator?utm_source=github&utm_medium=template&utm_campaign=qr-generator-html-tutorial): `POST https://api.apiverve.com/v1/qrcodegenerator`
+- [Full documentation](https://docs.apiverve.com?utm_source=github&utm_medium=template&utm_campaign=qr-generator-html-tutorial)
 
-**Example Response:**
+## Tech stack
 
-```json
-{
-  "status": "ok",
-  "error": null,
-  "data": {
-    "id": "b07577c8-e17f-4af3-aeff-94c74d9ea04a",
-    "format": "png",
-    "type": "url",
-    "correction": "M",
-    "size": 5,
-    "margin": 0,
-    "expires": 1766096864874,
-    "downloadURL": "https://storage.googleapis.com/apiverve/..."
-  }
-}
-```
-
-## Use Cases
-
-QR codes are useful for:
-
-- **Marketing** - Link to websites, landing pages, or promotions
-- **Business cards** - Share contact information (vCard)
-- **Payments** - Encode payment URLs or cryptocurrency addresses
-- **WiFi sharing** - Generate WiFi network credentials
-- **Event tickets** - Encode ticket IDs for scanning
-- **Product packaging** - Link to manuals, reviews, or registration
-- **Restaurant menus** - Contactless menu access
-
-## Customization Ideas
-
-Want to extend this tutorial? Here are some ideas:
-
-- Add color customization (foreground and background colors)
-- Add logo/image overlay in the center of the QR code
-- Add batch generation for multiple URLs
-- Save generation history to localStorage
-- Add QR code scanning/reading functionality
-
-## Related APIs
-
-Explore more APIs at [APIVerve](https://apiverve.com/marketplace?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial):
-
-- [Barcode Generator](https://apiverve.com/marketplace/barcodegenerator?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - Generate various barcode formats
-- [QR Code Reader](https://apiverve.com/marketplace/qrcodereader?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - Decode QR codes from images
-- [URL Shortener](https://apiverve.com/marketplace/urlshortener?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - Create short URLs for your QR codes
-
-## Free Plan Note
-
-This tutorial works with the free APIVerve plan. Some APIs may have:
-- **Locked fields**: Premium response fields return `null` on free plans
-- **Ignored parameters**: Some optional parameters require a paid plan
-
-The API response includes a `premium` object when limitations apply. [Upgrade anytime](https://dashboard.apiverve.com/plans) to unlock all features.
+- Plain HTML, CSS and JavaScript: no framework and no build step
+- **Vercel Functions** in `api/` for the server side (Node.js 20+)
+- Deploys to Vercel as-is: the page is served as static files, and each file in `api/` becomes a function
 
 ## License
 
-MIT - see [LICENSE](LICENSE)
-
-## Links
-
-- [Get API Key](https://dashboard.apiverve.com?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - Sign up free
-- [APIVerve Marketplace](https://apiverve.com/marketplace?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - Browse 300+ APIs
-- [QR Code Generator API](https://apiverve.com/marketplace/qrcodegenerator?utm_source=github&utm_medium=tutorial&utm_campaign=qr-generator-html-tutorial) - API details
+MIT. See [LICENSE](LICENSE).
